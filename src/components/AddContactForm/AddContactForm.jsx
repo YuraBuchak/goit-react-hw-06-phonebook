@@ -1,25 +1,27 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
 import css from '../Phonebook.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSlice/contactsSlice';
 
-export const AddContactForm = ({ onSubmit }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
-  const handleChangeInput = event => {
-    const { name, value } = event.target;
-    if (name === 'name') {
-      setName(value);
-    } else if (name === 'number') {
-      setNumber(value);
-    }
-  };
+export const AddContactForm = () => {
+  const contacts = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
 
   const handleSubmitForm = event => {
     event.preventDefault();
-    onSubmit({ name, number });
-    setName('');
-    setNumber('');
+    const name = event.target.elements.name.value;
+    const number = event.target.elements.number.value;
+    const normalizeName = name.toLowerCase().trim();
+    const isContact = contacts
+      .map(contact => contact.name.toLowerCase().trim())
+      .includes(normalizeName);
+
+    if (isContact) {
+      alert(`${name} was added earlyer`);
+      return;
+    }
+
+    dispatch(addContact(name, number));
+    event.target.reset();
   };
 
   return (
@@ -32,8 +34,6 @@ export const AddContactForm = ({ onSubmit }) => {
         Name
         <input
           className={css.addContactInput}
-          onChange={handleChangeInput}
-          value={name}
           type="text"
           name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -46,8 +46,6 @@ export const AddContactForm = ({ onSubmit }) => {
         Number
         <input
           className={css.addContactInput}
-          onChange={handleChangeInput}
-          value={number}
           type="tel"
           name="number"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -60,8 +58,4 @@ export const AddContactForm = ({ onSubmit }) => {
       </button>
     </form>
   );
-};
-
-AddContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };

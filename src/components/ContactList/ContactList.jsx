@@ -1,31 +1,32 @@
 import { ContactItem } from '../ContactItem/ContactItem';
-import PropTypes from 'prop-types';
 import css from '../Phonebook.module.css';
+import { useSelector } from 'react-redux';
 
-export const ContactList = ({ contactArrays, onClick }) => {
+export const ContactList = () => {
+  const contacts = useSelector(state => state.contact);
+
+  const filter = useSelector(state => state.filter);
+
+  const filterContactsInput = () => {
+    const normalizeFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizeFilter)
+    );
+  };
+
+  const filteredContacts = filterContactsInput();
+
   return (
     <>
-      {contactArrays.length > 0 && (
+      {filteredContacts.length ? (
         <ul>
-          {contactArrays.map(contact => (
-            <ContactItem key={contact.id} contact={contact} onClick={onClick} />
+          {filteredContacts.map(contact => (
+            <ContactItem key={contact.id} contact={contact} />
           ))}
         </ul>
-      )}
-      {contactArrays.length === 0 && (
+      ) : (
         <p className={css.labelFilter}>No contacts!</p>
       )}
     </>
   );
-};
-
-ContactList.propTypes = {
-  contactArrays: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onClick: PropTypes.func.isRequired,
 };
