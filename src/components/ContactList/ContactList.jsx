@@ -1,11 +1,12 @@
+import { stateContacts, stateFilter } from 'redux/selectors';
 import { ContactItem } from '../ContactItem/ContactItem';
 import css from '../Phonebook.module.css';
 import { useSelector } from 'react-redux';
 
 export const ContactList = () => {
-  const contacts = useSelector(state => state.contact);
+  const contacts = useSelector(stateContacts);
 
-  const filter = useSelector(state => state.filter);
+  const filter = useSelector(stateFilter);
 
   const filterContactsInput = () => {
     const normalizeFilter = filter.toLowerCase();

@@ -1,9 +1,10 @@
 import css from '../Phonebook.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contactsSlice/contactsSlice';
+import { stateContacts } from 'redux/selectors';
 
 export const AddContactForm = () => {
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(stateContacts);
   const dispatch = useDispatch();
 
   const handleSubmitForm = event => {
