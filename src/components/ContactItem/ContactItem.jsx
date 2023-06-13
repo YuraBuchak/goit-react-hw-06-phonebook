@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import css from '../Phonebook.module.css';
 import { useDispatch } from 'react-redux';
 import { deleteContact } from 'redux/contactsSlice/contactsSlice';
@@ -20,11 +20,10 @@ export const ContactItem = ({ contact }) => {
   );
 };
 
-// ContactItem.propTypes = {
-//   contact: PropTypes.shape({
-//     name: PropTypes.string.isRequired,
-//     number: PropTypes.string.isRequired,
-//     id: PropTypes.string.isRequired,
-//   }).isRequired,
-//   onClick: PropTypes.func.isRequired,
-// };
+ContactItem.propTypes = {
+  contact: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  }).isRequired,
+};
